@@ -3,35 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#F7F3EC" />
 
-    <!-- CHANGE ME: page title + meta description (shows in browser tab + search results) -->
+    <!-- CHANGE ME: page title + meta description -->
     <title>Gwendolyn — Websites for Small Business</title>
     <meta
       name="description"
-      content="Gwendolyn builds websites for small businesses. Fast, sharp, and built to get the phone ringing."
+      content="Gwendolyn builds websites for small businesses. Considered, fast, and built to get the phone ringing."
     />
 
-    <!-- Fonts: Archivo Black for big loud headlines, Space Grotesk for body, Space Mono for tags/labels.
-     These load from Google Fonts over the network — fine for GitHub Pages, just needs internet to render the exact faces.
-     If you ever want zero external requests, delete this link and the font-family lines will fall back to system fonts. -->
+    <!--
+  Type system, three faces doing three different jobs:
+  - Space Grotesk (display): the structural voice. Bold, geometric, used for headings only.
+  - Source Serif 4 italic (accent): one or two words per headline, never a whole sentence.
+    A grotesk headline with a single serif-italic word breaks the monotony of all-caps poster type
+    without resorting to a full serif/cream "editorial template" look.
+  - Public Sans (body + labels): built by 18F/USWDS specifically for accessible government services.
+    Generous x-height, calm at small sizes, real hinting at 16-17px — the right tool for body copy.
+-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;1,400;1,500&display=swap"
       rel="stylesheet"
     />
 
     <style>
       /* ============================================================
-     CHANGE ME: COLOR PALETTE
-     Swap these 5 values to retheme the whole site. Keep contrast high — that's the point.
+     COLOR — checked against WCAG 2.2 AA (4.5:1 text, 3:1 large text)
+     No pure #000 / #fff anywhere — true black-on-white is harsher on
+     the eye at screen brightness than an off-black on off-white pair.
+
+     --paper / --ink     14.6:1   (body text on light sections)
+     --rust  / --paper    6.2:1   (rust used as TEXT on light sections only)
+     --pine  / --paper    6.9:1   (pine used as TEXT on light sections only)
+     --ember / --ink      7.4:1   (ember used as TEXT on dark sections only —
+                                   rust itself drops to ~2.4:1 on --ink, so it
+                                   never appears as text on a dark background)
+     --grey  / --paper    5.1:1   (secondary/caption text)
      ============================================================ */
       :root {
-        --ink: #121212; /* near-black background / primary text */
-        --paper: #f7f2e7; /* warm off-white background / light text */
-        --yellow: #ffcc00; /* caution yellow accent */
-        --orange: #ff4612; /* safety orange accent */
-        --grey: #6b6660; /* muted secondary text on paper */
+        --paper: #f7f3ec; /* warm off-white, not pure white */
+        --ink: #21201d; /* warm off-black, not pure black */
+        --rust: #9c3b1b; /* clay/terracotta — text + accents on LIGHT sections */
+        --pine: #2e5c50; /* deep teal-green — text + accents on LIGHT sections */
+        --ember: #ff8f66; /* lighter, warmer accent — text + links on DARK sections */
+        --grey: #6b6660; /* secondary text on light sections */
+
+        /* ----------------------------------------------------------
+       TYPE SCALE — fluid modular scale, ratio ≈1.25 (a "major third").
+       Small/body steps stay fixed in rem so reading size never shrinks
+       on small screens; only the display steps (3–5) flex with viewport.
+       ---------------------------------------------------------- */
+        --step--1: 0.875rem; /* 14px — captions, labels */
+        --step-0: 1.0625rem; /* 17px — body */
+        --step-1: 1.25rem; /* 20px — lead paragraphs */
+        --step-2: clamp(1.5rem, 1.3rem + 1vw, 1.75rem); /* card titles */
+        --step-3: clamp(1.875rem, 1.5rem + 2vw, 2.25rem); /* h2 */
+        --step-4: clamp(2.25rem, 1.6rem + 3.5vw, 3.25rem); /* h2 large */
+        --step-5: clamp(2.5rem, 1.7rem + 5vw, 4.25rem); /* h1 */
       }
 
       * {
@@ -47,7 +78,12 @@
       body {
         background: var(--paper);
         color: var(--ink);
-        font-family: "Space Grotesk", Arial, sans-serif;
+        font-family: "Public Sans", system-ui, Arial, sans-serif;
+        font-feature-settings:
+          "liga" 1,
+          "kern" 1;
+        font-size: var(--step-0);
+        line-height: 1.65;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
@@ -56,10 +92,19 @@
         max-width: 100%;
         display: block;
       }
-
       a {
         color: inherit;
         text-decoration: none;
+      }
+
+      /* Visible, high-contrast focus state for every interactive element.
+     Default browser focus rings get stripped by a lot of CSS resets —
+     this one is deliberate and never removed. */
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--rust);
+        outline-offset: 3px;
+        border-radius: 2px;
       }
 
       .wrap {
@@ -68,117 +113,173 @@
         padding: 0 24px;
       }
 
+      /* Skip link — visually hidden until keyboard focus reaches it */
+      .skip-link {
+        position: absolute;
+        left: -999px;
+        top: 0;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 12px 20px;
+        z-index: 100;
+      }
+      .skip-link:focus {
+        left: 12px;
+        top: 12px;
+      }
+
       .eyebrow {
-        font-family: "Space Mono", monospace;
-        font-weight: 700;
-        font-size: 0.78rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
+        font-family: "Public Sans", sans-serif;
+        font-weight: 600;
+        font-size: var(--step--1);
+        letter-spacing: 0.06em;
+        font-variant-caps: all-small-caps; /* real small caps where the font supports them,
+                                           graceful fallback to regular caps otherwise */
+        text-transform: uppercase; /* fallback for browsers without font-variant-caps support */
       }
 
       h1,
-      h2 {
-        font-family: "Archivo Black", Arial, sans-serif;
-        line-height: 0.98;
-        text-transform: uppercase;
+      h2,
+      h3 {
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-weight: 700;
+        line-height: 1.08;
         letter-spacing: -0.01em;
+        font-optical-sizing: auto;
+        text-wrap: pretty; /* progressive enhancement — prevents orphan words, no-op if unsupported */
+      }
+
+      /* The mixed-type accent: a single italic serif word inside a bold grotesk headline. */
+      em {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-style: italic;
+        font-weight: 500;
+        color: var(--rust);
+      }
+
+      p {
+        max-width: 65ch;
+        text-wrap: pretty;
       }
 
       /* ---------------- HEADER ---------------- */
       header {
-        background: var(--ink);
-        color: var(--paper);
+        background: var(--paper);
+        border-bottom: 1px solid #e3dccc;
       }
       .nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 22px 24px;
+        padding: 20px 24px;
         max-width: 1100px;
         margin: 0 auto;
       }
-      /* CHANGE ME: your name / wordmark in the top-left of the nav bar */
+      /* CHANGE ME: your name / wordmark */
       .logo {
-        font-family: "Archivo Black", Arial, sans-serif;
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-weight: 700;
         font-size: 1.1rem;
-        letter-spacing: 0.02em;
       }
-      /* CHANGE ME: email shown in the header (top-right, small) */
+      /* CHANGE ME: email shown in the header */
       .nav a.contact {
-        font-family: "Space Mono", monospace;
-        font-size: 0.85rem;
+        font-size: var(--step--1);
         text-decoration: underline;
-        text-decoration-color: var(--orange);
+        text-decoration-color: var(--rust);
         text-underline-offset: 4px;
+        padding: 10px 4px; /* keeps the tap target comfortably above the 24×24px AA minimum */
       }
 
       /* ---------------- HERO ---------------- */
       .hero {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 70px 0 60px;
+        padding: 90px 0 70px;
       }
       .hero .eyebrow {
-        color: var(--yellow);
+        color: var(--rust);
         margin-bottom: 18px;
       }
       .hero h1 {
-        font-size: clamp(2.6rem, 8vw, 5.4rem);
-        margin-bottom: 22px;
-      }
-      .hero h1 .accent {
-        color: var(--orange);
+        font-size: var(--step-5);
+        margin-bottom: 24px;
+        max-width: 14ch;
       }
       .hero .sub {
-        max-width: 540px;
-        font-size: clamp(1rem, 2vw, 1.15rem);
-        color: #d8d2c4;
+        font-size: var(--step-1);
+        color: var(--grey);
         font-weight: 400;
+        max-width: 46ch;
       }
 
-      /* ---------------- HAZARD MARQUEE (signature element) ---------------- */
-      .hazard-stripe {
-        height: 12px;
-        background: repeating-linear-gradient(
-          135deg,
-          var(--yellow) 0 22px,
-          var(--ink) 22px 44px
-        );
-      }
+      /* ---------------- MARQUEE (signature element, now slow + pausable) ---------------- */
       .marquee {
         background: var(--ink);
-        color: var(--yellow);
+        border-top: 1px solid #38352f;
+        border-bottom: 1px solid #38352f;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 24px;
+      }
+      .marquee-viewport {
+        flex: 1;
         overflow: hidden;
         white-space: nowrap;
-        border-top: 1px solid #2a2a2a;
-        border-bottom: 1px solid #2a2a2a;
       }
       .marquee-track {
         display: inline-block;
         padding-left: 100%;
-        animation: scroll 22s linear infinite;
+        animation: scroll 60s linear infinite; /* slow — a full pass takes a minute and a half */
       }
-      .marquee span {
-        font-family: "Space Mono", monospace;
-        font-weight: 700;
-        font-size: 0.95rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        padding: 16px 0;
+      .marquee-track[data-paused="true"] {
+        animation-play-state: paused;
+      }
+      .marquee-copy {
+        font-size: var(--step--1);
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--ember);
+        padding: 18px 0;
         display: inline-block;
       }
       @keyframes scroll {
-        0% {
+        from {
           transform: translateX(0);
         }
-        100% {
+        to {
           transform: translateX(-100%);
         }
       }
+      .marquee-toggle {
+        flex-shrink: 0;
+        background: transparent;
+        border: 1px solid var(--ember);
+        color: var(--ember);
+        font-family: "Public Sans", sans-serif;
+        font-size: var(--step--1);
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .marquee-toggle:hover {
+        background: var(--ember);
+        color: var(--ink);
+      }
+
       @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
         .marquee-track {
           animation: none;
-          padding-left: 24px;
+          padding-left: 0;
+          white-space: normal;
+        }
+        .marquee-track .marquee-copy:nth-child(2) {
+          display: none;
+        }
+        .marquee-toggle {
+          display: none;
         }
       }
 
@@ -187,12 +288,13 @@
         padding: 90px 0 80px;
       }
       .work .eyebrow {
-        color: var(--orange);
+        color: var(--pine);
         margin-bottom: 10px;
       }
       .work h2 {
-        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-size: var(--step-4);
         margin-bottom: 50px;
+        max-width: 16ch;
       }
       .work-grid {
         display: grid;
@@ -206,70 +308,56 @@
       }
 
       .card {
-        border: 3px solid var(--ink);
+        border: 1px solid #e3dccc;
         background: var(--paper);
-        transition: transform 0.15s ease;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
       }
       .card:hover {
-        transform: translateY(-6px);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px -16px rgba(33, 32, 29, 0.35);
       }
 
-      /* Placeholder image tiles: swap these for real screenshots, see comments in the body below. */
+      /* Decorative placeholder tiles. aria-hidden because the card title + link below
+     already give screen reader users everything they need — these add nothing
+     but color until you swap in a real screenshot. */
       .tile {
         width: 100%;
         aspect-ratio: 16 / 10;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "Archivo Black", Arial, sans-serif;
-        font-size: 4rem;
-        color: var(--ink);
-        border-bottom: 3px solid var(--ink);
-        position: relative;
-        overflow: hidden;
-      }
-      .tile::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-          45deg,
-          rgba(0, 0, 0, 0.06) 0 10px,
-          transparent 10px 20px
-        );
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 3.5rem;
+        color: var(--paper);
       }
       .tile--a {
-        background: var(--orange);
-        color: var(--ink);
+        background: var(--rust);
       }
       .tile--b {
-        background: var(--yellow);
-        color: var(--ink);
+        background: var(--pine);
       }
 
       .card-body {
-        padding: 26px;
+        padding: 28px;
       }
       .card-body h3 {
-        font-family: "Archivo Black", Arial, sans-serif;
-        text-transform: uppercase;
-        font-size: 1.3rem;
+        font-size: var(--step-2);
         margin-bottom: 10px;
       }
       .card-body p {
         color: var(--grey);
-        font-size: 0.98rem;
+        font-size: var(--step-0);
         margin-bottom: 18px;
       }
       .card-body .visit {
-        font-family: "Space Mono", monospace;
-        font-weight: 700;
-        font-size: 0.85rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        border-bottom: 2px solid var(--orange);
+        font-weight: 600;
+        font-size: var(--step--1);
+        border-bottom: 2px solid var(--rust);
         display: inline-block;
-        padding-bottom: 2px;
+        padding: 4px 2px;
       }
 
       /* ---------------- ABOUT ---------------- */
@@ -279,55 +367,67 @@
         padding: 90px 0;
       }
       .about .eyebrow {
-        color: var(--yellow);
+        color: var(--ember);
         margin-bottom: 18px;
       }
       .about h2 {
-        font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-        margin-bottom: 24px;
-        max-width: 700px;
+        font-size: var(--step-4);
+        margin-bottom: 28px;
+        max-width: 18ch;
       }
       .about p {
-        max-width: 560px;
         color: #d8d2c4;
-        font-size: 1.05rem;
+        font-size: var(--step-1);
       }
 
-      /* ---------------- CTA / ONE WAY IN ---------------- */
+      /* A real drop cap on the lead paragraph — ::first-letter, not a positioned
+     image, so it scales with the text and works the same in every browser. */
+      .about p::first-letter {
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 700;
+        font-size: 3.2em;
+        line-height: 0.8;
+        float: left;
+        padding: 0.05em 0.08em 0 0;
+        color: var(--ember);
+      }
+
+      /* ---------------- CTA ---------------- */
       .cta {
-        background: var(--orange);
-        color: var(--ink);
         padding: 100px 0;
         text-align: center;
       }
       .cta .eyebrow {
-        color: var(--ink);
+        color: var(--rust);
         margin-bottom: 16px;
       }
       .cta h2 {
-        font-size: clamp(2rem, 6vw, 3.6rem);
-        margin-bottom: 36px;
+        font-size: var(--step-4);
+        margin-bottom: 40px;
       }
-      /* CHANGE ME: the big email button. Update the mailto: address AND the visible text below. */
-      .stamp {
+      /* CHANGE ME: email button — update mailto + visible text */
+      .button {
         display: inline-block;
-        font-family: "Archivo Black", Arial, sans-serif;
-        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-        text-transform: uppercase;
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-weight: 700;
+        font-size: var(--step-1);
         background: var(--paper);
         color: var(--ink);
-        border: 4px solid var(--ink);
-        padding: 22px 44px;
-        transform: rotate(-2deg);
-        transition: transform 0.15s ease;
+        border: 2px solid var(--ink);
+        padding: 18px 40px;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease;
       }
-      .stamp:hover {
-        transform: rotate(0deg) scale(1.03);
+      .button:hover {
+        background: var(--rust);
+        color: var(--paper);
+        border-color: var(--rust);
       }
       .cta .email-plain {
-        margin-top: 22px;
-        font-family: "Space Mono", monospace;
-        font-size: 0.9rem;
+        margin-top: 20px;
+        font-size: var(--step--1);
+        color: var(--grey);
       }
 
       /* ---------------- FOOTER ---------------- */
@@ -342,153 +442,179 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
-        font-family: "Space Mono", monospace;
-        font-size: 0.8rem;
-        letter-spacing: 0.04em;
+        font-size: var(--step--1);
       }
       footer a {
         text-decoration: underline;
-        text-decoration-color: var(--orange);
+        text-decoration-color: var(--ember);
+        color: var(--ember);
+      }
+
+      /* Respect a stated preference for more contrast, where supported */
+      @media (prefers-contrast: more) {
+        .card {
+          border-width: 2px;
+        }
+        .button {
+          border-width: 3px;
+        }
       }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
     <!-- ============================================================
        HEADER
        ============================================================ -->
     <header>
       <nav class="nav">
         <!-- CHANGE ME: your name / wordmark -->
-        <div class="logo">GWENDOLYN</div>
-        <!-- CHANGE ME: email address (header link) -->
+        <div class="logo">Gwendolyn</div>
+        <!-- CHANGE ME: email address -->
         <a class="contact" href="mailto:showcase.by.gwen@gmail.com"
           >showcase.by.gwen@gmail.com</a
         >
       </nav>
     </header>
 
-    <!-- ============================================================
-       HERO
-       ============================================================ -->
-    <section class="hero">
-      <div class="wrap">
-        <div class="eyebrow">Web design for small business</div>
-        <!-- CHANGE ME: hero headline + subhead -->
-        <h1>Gwendolyn<br />makes <span class="accent">websites</span></h1>
-        <p class="sub">
-          I build sites for small business owners who need more customers, not a
-          design lecture. Fast to load. Easy to update. Built to get you booked.
-        </p>
-      </div>
-    </section>
+    <main id="main">
+      <!-- ============================================================
+         HERO
+         ============================================================ -->
+      <section class="hero">
+        <div class="wrap">
+          <div class="eyebrow">Web design for small business</div>
+          <!-- CHANGE ME: hero headline. Wrap one word in <em> for the serif-italic accent. -->
+          <h1>Gwendolyn makes <em>considered</em> websites</h1>
+          <p class="sub">
+            I build sites for small business owners who need more customers, not
+            a design lecture. Fast to load, easy to update, and built to get you
+            booked.
+          </p>
+        </div>
+      </section>
 
-    <!-- ============================================================
-       SIGNATURE HAZARD-STRIPE MARQUEE
-       CHANGE ME: the scrolling text below ("MARQUEE TEXT 1" / repeated copy)
-       This text is duplicated so the loop looks seamless — if you edit it,
-       edit BOTH <span> copies to match.
-       ============================================================ -->
-    <div class="hazard-stripe"></div>
-    <div class="marquee">
-      <div class="marquee-track">
-        <span
-          >NOW BOOKING NEW PROJECTS &nbsp;&bull;&nbsp; WEBSITES FOR SMALL
-          BUSINESS &nbsp;&bull;&nbsp; ONE EMAIL AWAY &nbsp;&bull;&nbsp;</span
-        >
-        <span
-          >NOW BOOKING NEW PROJECTS &nbsp;&bull;&nbsp; WEBSITES FOR SMALL
-          BUSINESS &nbsp;&bull;&nbsp; ONE EMAIL AWAY &nbsp;&bull;&nbsp;</span
-        >
-      </div>
-    </div>
-    <div class="hazard-stripe"></div>
-
-    <!-- ============================================================
-       WORK
-       ============================================================ -->
-    <section class="work">
-      <div class="wrap">
-        <div class="eyebrow">Portfolio</div>
-        <h2>The work</h2>
-
-        <div class="work-grid">
-          <!-- CHANGE ME: WORK ITEM 1 — Kingscourt Travellers Inn -->
-          <div class="card">
-            <!--
-            PLACEHOLDER TILE — swap this div for a real screenshot when you have one:
-            <img class="tile" src="kingscourt-screenshot.jpg" alt="Kingscourt Travellers Inn homepage">
-            (keep the class="tile" so it keeps the same size/border)
-          -->
-            <div class="tile tile--a">K</div>
-            <div class="card-body">
-              <h3>Kingscourt Travellers Inn</h3>
-              <!-- CHANGE ME: one-line description of this project -->
-              <p>A small inn's website built to turn browsers into bookings.</p>
-              <a
-                class="visit"
-                href="https://kingscourt-travellers-inn.com/"
-                target="_blank"
-                rel="noopener"
-                >Visit site →</a
-              >
-            </div>
+      <!-- ============================================================
+         MARQUEE — slow (90s per pass), pausable, hidden under reduced motion.
+         CHANGE ME: the text in BOTH .marquee-copy spans (keep them identical)
+         ============================================================ -->
+      <div class="marquee" role="group" aria-label="Announcement">
+        <div class="marquee-viewport">
+          <div class="marquee-track" id="marquee-track">
+            <span class="marquee-copy"
+              >Now booking new projects &nbsp;&bull;&nbsp; Websites for small
+              business &nbsp;&bull;&nbsp; One email away
+              &nbsp;&bull;&nbsp;</span
+            >
+            <span class="marquee-copy"
+              >Now booking new projects &nbsp;&bull;&nbsp; Websites for small
+              business &nbsp;&bull;&nbsp; One email away
+              &nbsp;&bull;&nbsp;</span
+            >
+            <span class="marquee-copy"
+              >Now booking new projects &nbsp;&bull;&nbsp; Websites for small
+              business &nbsp;&bull;&nbsp; One email away
+              &nbsp;&bull;&nbsp;</span
+            >
           </div>
+        </div>
+        <button class="marquee-toggle" id="marquee-toggle" aria-pressed="false">
+          Pause
+        </button>
+      </div>
 
-          <!-- CHANGE ME: WORK ITEM 2 — Cyber Brief -->
-          <div class="card">
-            <!--
-            PLACEHOLDER TILE — swap this div for a real screenshot when you have one:
-            <img class="tile" src="cyberbrief-screenshot.jpg" alt="Cyber Brief homepage">
-          -->
-            <div class="tile tile--b">C</div>
-            <div class="card-body">
-              <h3>Cyber Brief</h3>
-              <!-- CHANGE ME: one-line description of this project -->
-              <p>
-                A cybersecurity publication for CISOs, built clean, fast, and
-                easy to read.
-              </p>
-              <a
-                class="visit"
-                href="https://cyber-brief.net/"
-                target="_blank"
-                rel="noopener"
-                >Visit site →</a
-              >
+      <!-- ============================================================
+         WORK
+         ============================================================ -->
+      <section class="work">
+        <div class="wrap">
+          <div class="eyebrow">Portfolio</div>
+          <h2>The work</h2>
+
+          <div class="work-grid">
+            <!-- CHANGE ME: WORK ITEM 1 — Kingscourt Travellers Inn -->
+            <div class="card">
+              <!--
+              PLACEHOLDER — swap for a real screenshot:
+              <img class="tile" src="kingscourt-screenshot.jpg" alt="Kingscourt Travellers Inn homepage">
+            -->
+              <div class="tile tile--a" aria-hidden="true">K</div>
+              <div class="card-body">
+                <h3>Kingscourt Travellers Inn</h3>
+                <!-- CHANGE ME: one-line description -->
+                <p>
+                  A small inn's website built to turn browsers into bookings.
+                </p>
+                <a
+                  class="visit"
+                  href="https://kingscourt-travellers-inn.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Visit site →</a
+                >
+              </div>
+            </div>
+
+            <!-- CHANGE ME: WORK ITEM 2 — Cyber Brief -->
+            <div class="card">
+              <!--
+              PLACEHOLDER — swap for a real screenshot:
+              <img class="tile" src="cyberbrief-screenshot.jpg" alt="Cyber Brief homepage">
+            -->
+              <div class="tile tile--b" aria-hidden="true">C</div>
+              <div class="card-body">
+                <h3>Cyber Brief</h3>
+                <!-- CHANGE ME: one-line description -->
+                <p>
+                  A cybersecurity publication for CISOs, built clean, fast, and
+                  easy to read.
+                </p>
+                <a
+                  class="visit"
+                  href="https://cyber-brief.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Visit site →</a
+                >
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ============================================================
-       ABOUT / WHO I AM
-       ============================================================ -->
-    <section class="about">
-      <div class="wrap">
-        <div class="eyebrow">Who I am</div>
-        <!-- CHANGE ME: your bio. Keep it short — this is the whole pitch. -->
-        <h2>I'm Gwendolyn. I make websites for small business.</h2>
-        <p>
-          No jargon, no bloated proposals, no six-week timelines. Just a site
-          that looks good, loads fast, and does its job.
-        </p>
-      </div>
-    </section>
+      <!-- ============================================================
+         ABOUT
+         ============================================================ -->
+      <section class="about">
+        <div class="wrap">
+          <div class="eyebrow">Who I am</div>
+          <!-- CHANGE ME: bio headline -->
+          <h2>I'm Gwendolyn. I make websites for small business.</h2>
+          <!-- CHANGE ME: bio paragraph — the first letter gets the drop cap automatically -->
+          <p>
+            No jargon, no bloated proposals, no six-week timelines. Just a site
+            that looks good, loads fast, and does its job.
+          </p>
+        </div>
+      </section>
 
-    <!-- ============================================================
-       CTA / ONE WAY IN
-       ============================================================ -->
-    <section class="cta">
-      <div class="wrap">
-        <div class="eyebrow">One way in</div>
-        <!-- CHANGE ME: CTA headline -->
-        <h2>Got a project?<br />Let's talk.</h2>
-        <!-- CHANGE ME: email address (this is the main button — update both the mailto and the visible text) -->
-        <a class="stamp" href="mailto:showcase.by.gwen@gmail.com">Email me</a>
-        <div class="email-plain">showcase.by.gwen@gmail.com</div>
-      </div>
-    </section>
+      <!-- ============================================================
+         CTA
+         ============================================================ -->
+      <section class="cta">
+        <div class="wrap">
+          <div class="eyebrow">One way in</div>
+          <!-- CHANGE ME: CTA headline -->
+          <h2>Got a project? Let's <em>talk</em>.</h2>
+          <!-- CHANGE ME: email address — update both the mailto and the visible text -->
+          <a class="button" href="mailto:showcase.by.gwen@gmail.com"
+            >Email me</a
+          >
+          <div class="email-plain">showcase.by.gwen@gmail.com</div>
+        </div>
+      </section>
+    </main>
 
     <!-- ============================================================
        FOOTER
@@ -496,11 +622,23 @@
     <footer>
       <div class="wrap footer-row">
         <!-- CHANGE ME: footer line / year -->
-        <div>© 2026 Gwendolyn. Site built loud, on purpose.</div>
+        <div>© 2026 Gwendolyn. Built with intention.</div>
         <a href="mailto:showcase.by.gwen@gmail.com"
           >showcase.by.gwen@gmail.com</a
         >
       </div>
     </footer>
+
+    <script>
+      // Minimal, no framework: toggles the marquee per WCAG 2.2.2 (Pause, Stop, Hide).
+      var track = document.getElementById("marquee-track");
+      var btn = document.getElementById("marquee-toggle");
+      btn.addEventListener("click", function () {
+        var paused = track.getAttribute("data-paused") === "true";
+        track.setAttribute("data-paused", String(!paused));
+        btn.setAttribute("aria-pressed", String(!paused));
+        btn.textContent = paused ? "Pause" : "Play";
+      });
+    </script>
   </body>
 </html>
