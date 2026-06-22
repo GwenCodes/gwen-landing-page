@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CHANGE ME: page title + meta description (shows in browser tab + search results) -->
+    <title>Gwendolyn — Websites for Small Business</title>
+    <meta
+      name="description"
+      content="Gwendolyn builds websites for small businesses. Fast, sharp, and built to get the phone ringing."
+    />
+
+    <!-- Fonts: Archivo Black for big loud headlines, Space Grotesk for body, Space Mono for tags/labels.
+     These load from Google Fonts over the network — fine for GitHub Pages, just needs internet to render the exact faces.
+     If you ever want zero external requests, delete this link and the font-family lines will fall back to system fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+     CHANGE ME: COLOR PALETTE
+     Swap these 5 values to retheme the whole site. Keep contrast high — that's the point.
+     ============================================================ */
+      :root {
+        --ink: #121212; /* near-black background / primary text */
+        --paper: #f7f2e7; /* warm off-white background / light text */
+        --yellow: #ffcc00; /* caution yellow accent */
+        --orange: #ff4612; /* safety orange accent */
+        --grey: #6b6660; /* muted secondary text on paper */
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Space Grotesk", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .eyebrow {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        font-family: "Archivo Black", Arial, sans-serif;
+        line-height: 0.98;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---------------- HEADER ---------------- */
+      header {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      /* CHANGE ME: your name / wordmark in the top-left of the nav bar */
+      .logo {
+        font-family: "Archivo Black", Arial, sans-serif;
+        font-size: 1.1rem;
+        letter-spacing: 0.02em;
+      }
+      /* CHANGE ME: email shown in the header (top-right, small) */
+      .nav a.contact {
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        text-decoration: underline;
+        text-decoration-color: var(--orange);
+        text-underline-offset: 4px;
+      }
+
+      /* ---------------- HERO ---------------- */
+      .hero {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 70px 0 60px;
+      }
+      .hero .eyebrow {
+        color: var(--yellow);
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(2.6rem, 8vw, 5.4rem);
+        margin-bottom: 22px;
+      }
+      .hero h1 .accent {
+        color: var(--orange);
+      }
+      .hero .sub {
+        max-width: 540px;
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        color: #d8d2c4;
+        font-weight: 400;
+      }
+
+      /* ---------------- HAZARD MARQUEE (signature element) ---------------- */
+      .hazard-stripe {
+        height: 12px;
+        background: repeating-linear-gradient(
+          135deg,
+          var(--yellow) 0 22px,
+          var(--ink) 22px 44px
+        );
+      }
+      .marquee {
+        background: var(--ink);
+        color: var(--yellow);
+        overflow: hidden;
+        white-space: nowrap;
+        border-top: 1px solid #2a2a2a;
+        border-bottom: 1px solid #2a2a2a;
+      }
+      .marquee-track {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll 22s linear infinite;
+      }
+      .marquee span {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 16px 0;
+        display: inline-block;
+      }
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .marquee-track {
+          animation: none;
+          padding-left: 24px;
+        }
+      }
+
+      /* ---------------- WORK ---------------- */
+      .work {
+        padding: 90px 0 80px;
+      }
+      .work .eyebrow {
+        color: var(--orange);
+        margin-bottom: 10px;
+      }
+      .work h2 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        margin-bottom: 50px;
+      }
+      .work-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+      @media (max-width: 720px) {
+        .work-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border: 3px solid var(--ink);
+        background: var(--paper);
+        transition: transform 0.15s ease;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+      }
+
+      /* Placeholder image tiles: swap these for real screenshots, see comments in the body below. */
+      .tile {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Archivo Black", Arial, sans-serif;
+        font-size: 4rem;
+        color: var(--ink);
+        border-bottom: 3px solid var(--ink);
+        position: relative;
+        overflow: hidden;
+      }
+      .tile::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0, 0, 0, 0.06) 0 10px,
+          transparent 10px 20px
+        );
+      }
+      .tile--a {
+        background: var(--orange);
+        color: var(--ink);
+      }
+      .tile--b {
+        background: var(--yellow);
+        color: var(--ink);
+      }
+
+      .card-body {
+        padding: 26px;
+      }
+      .card-body h3 {
+        font-family: "Archivo Black", Arial, sans-serif;
+        text-transform: uppercase;
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+      .card-body p {
+        color: var(--grey);
+        font-size: 0.98rem;
+        margin-bottom: 18px;
+      }
+      .card-body .visit {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--orange);
+        display: inline-block;
+        padding-bottom: 2px;
+      }
+
+      /* ---------------- ABOUT ---------------- */
+      .about {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 90px 0;
+      }
+      .about .eyebrow {
+        color: var(--yellow);
+        margin-bottom: 18px;
+      }
+      .about h2 {
+        font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+        margin-bottom: 24px;
+        max-width: 700px;
+      }
+      .about p {
+        max-width: 560px;
+        color: #d8d2c4;
+        font-size: 1.05rem;
+      }
+
+      /* ---------------- CTA / ONE WAY IN ---------------- */
+      .cta {
+        background: var(--orange);
+        color: var(--ink);
+        padding: 100px 0;
+        text-align: center;
+      }
+      .cta .eyebrow {
+        color: var(--ink);
+        margin-bottom: 16px;
+      }
+      .cta h2 {
+        font-size: clamp(2rem, 6vw, 3.6rem);
+        margin-bottom: 36px;
+      }
+      /* CHANGE ME: the big email button. Update the mailto: address AND the visible text below. */
+      .stamp {
+        display: inline-block;
+        font-family: "Archivo Black", Arial, sans-serif;
+        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+        text-transform: uppercase;
+        background: var(--paper);
+        color: var(--ink);
+        border: 4px solid var(--ink);
+        padding: 22px 44px;
+        transform: rotate(-2deg);
+        transition: transform 0.15s ease;
+      }
+      .stamp:hover {
+        transform: rotate(0deg) scale(1.03);
+      }
+      .cta .email-plain {
+        margin-top: 22px;
+        font-family: "Space Mono", monospace;
+        font-size: 0.9rem;
+      }
+
+      /* ---------------- FOOTER ---------------- */
+      footer {
+        background: var(--ink);
+        color: #97928a;
+        padding: 30px 0;
+      }
+      .footer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-family: "Space Mono", monospace;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+      }
+      footer a {
+        text-decoration: underline;
+        text-decoration-color: var(--orange);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+       HEADER
+       ============================================================ -->
+    <header>
+      <nav class="nav">
+        <!-- CHANGE ME: your name / wordmark -->
+        <div class="logo">GWENDOLYN</div>
+        <!-- CHANGE ME: email address (header link) -->
+        <a class="contact" href="mailto:showcase.by.gwen@gmail.com"
+          >showcase.by.gwen@gmail.com</a
+        >
+      </nav>
+    </header>
+
+    <!-- ============================================================
+       HERO
+       ============================================================ -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Web design for small business</div>
+        <!-- CHANGE ME: hero headline + subhead -->
+        <h1>Gwendolyn<br />makes <span class="accent">websites</span></h1>
+        <p class="sub">
+          I build sites for small business owners who need more customers, not a
+          design lecture. Fast to load. Easy to update. Built to get you booked.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       SIGNATURE HAZARD-STRIPE MARQUEE
+       CHANGE ME: the scrolling text below ("MARQUEE TEXT 1" / repeated copy)
+       This text is duplicated so the loop looks seamless — if you edit it,
+       edit BOTH <span> copies to match.
+       ============================================================ -->
+    <div class="hazard-stripe"></div>
+    <div class="marquee">
+      <div class="marquee-track">
+        <span
+          >NOW BOOKING NEW PROJECTS &nbsp;&bull;&nbsp; WEBSITES FOR SMALL
+          BUSINESS &nbsp;&bull;&nbsp; ONE EMAIL AWAY &nbsp;&bull;&nbsp;</span
+        >
+        <span
+          >NOW BOOKING NEW PROJECTS &nbsp;&bull;&nbsp; WEBSITES FOR SMALL
+          BUSINESS &nbsp;&bull;&nbsp; ONE EMAIL AWAY &nbsp;&bull;&nbsp;</span
+        >
+      </div>
+    </div>
+    <div class="hazard-stripe"></div>
+
+    <!-- ============================================================
+       WORK
+       ============================================================ -->
+    <section class="work">
+      <div class="wrap">
+        <div class="eyebrow">Portfolio</div>
+        <h2>The work</h2>
+
+        <div class="work-grid">
+          <!-- CHANGE ME: WORK ITEM 1 — Kingscourt Travellers Inn -->
+          <div class="card">
+            <!--
+            PLACEHOLDER TILE — swap this div for a real screenshot when you have one:
+            <img class="tile" src="kingscourt-screenshot.jpg" alt="Kingscourt Travellers Inn homepage">
+            (keep the class="tile" so it keeps the same size/border)
+          -->
+            <div class="tile tile--a">K</div>
+            <div class="card-body">
+              <h3>Kingscourt Travellers Inn</h3>
+              <!-- CHANGE ME: one-line description of this project -->
+              <p>A small inn's website built to turn browsers into bookings.</p>
+              <a
+                class="visit"
+                href="https://kingscourt-travellers-inn.com/"
+                target="_blank"
+                rel="noopener"
+                >Visit site →</a
+              >
+            </div>
+          </div>
+
+          <!-- CHANGE ME: WORK ITEM 2 — Cyber Brief -->
+          <div class="card">
+            <!--
+            PLACEHOLDER TILE — swap this div for a real screenshot when you have one:
+            <img class="tile" src="cyberbrief-screenshot.jpg" alt="Cyber Brief homepage">
+          -->
+            <div class="tile tile--b">C</div>
+            <div class="card-body">
+              <h3>Cyber Brief</h3>
+              <!-- CHANGE ME: one-line description of this project -->
+              <p>
+                A cybersecurity publication for CISOs, built clean, fast, and
+                easy to read.
+              </p>
+              <a
+                class="visit"
+                href="https://cyber-brief.net/"
+                target="_blank"
+                rel="noopener"
+                >Visit site →</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       ABOUT / WHO I AM
+       ============================================================ -->
+    <section class="about">
+      <div class="wrap">
+        <div class="eyebrow">Who I am</div>
+        <!-- CHANGE ME: your bio. Keep it short — this is the whole pitch. -->
+        <h2>I'm Gwendolyn. I make websites for small business.</h2>
+        <p>
+          No jargon, no bloated proposals, no six-week timelines. Just a site
+          that looks good, loads fast, and does its job.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       CTA / ONE WAY IN
+       ============================================================ -->
+    <section class="cta">
+      <div class="wrap">
+        <div class="eyebrow">One way in</div>
+        <!-- CHANGE ME: CTA headline -->
+        <h2>Got a project?<br />Let's talk.</h2>
+        <!-- CHANGE ME: email address (this is the main button — update both the mailto and the visible text) -->
+        <a class="stamp" href="mailto:showcase.by.gwen@gmail.com">Email me</a>
+        <div class="email-plain">showcase.by.gwen@gmail.com</div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+    <footer>
+      <div class="wrap footer-row">
+        <!-- CHANGE ME: footer line / year -->
+        <div>© 2026 Gwendolyn. Site built loud, on purpose.</div>
+        <a href="mailto:showcase.by.gwen@gmail.com"
+          >showcase.by.gwen@gmail.com</a
+        >
+      </div>
+    </footer>
+  </body>
+</html>
